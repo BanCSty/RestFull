@@ -1,0 +1,36 @@
+﻿@model IEnumerable<RestFull.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NameOrder)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmountOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameOrder)
+            </td>
+            <td>
+                <a asp-action="DeleteOrder" asp-route-id="@item.idMain">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
