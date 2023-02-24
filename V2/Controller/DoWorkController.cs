@@ -19,7 +19,7 @@ namespace V2.Controller
 
         //GET: api/DoWork/GenerateRandom
         [HttpGet("GenerateRandom")]
-        public Something GetRandomNameAndValue()
+        public ActionResult<Something> GetRandomNameAndValue()
         {
             //Генерируем рандом свойство
             var randomValue = _service.GenerateRandomEnumerable();
@@ -31,7 +31,7 @@ namespace V2.Controller
 
         //GET: api/DoWork/Response
         [HttpGet("Response")]
-        public string GetResponse()
+        public ActionResult<string> GetResponse()
         {
             return _service.GetDateAndValues();
         }

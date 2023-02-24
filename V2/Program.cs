@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using V2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,14 @@ builder.Logging.AddConsole();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "DefaultApiTemplate",
+        Version = "v1"
+    });
+});
 
 //Singelton... для имитации бд...
 builder.Services.AddSingleton<IDoSomethingService, DoSomethingService>();
@@ -18,11 +26,11 @@ builder.Services.AddHostedService<DoSomethingService>();
 var app = builder.Build();
 
 // swagger/index.html
-app.UseSwaggerUI();
 app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DefaultApiTemplate v1"));
 
 
-app.UseSwagger(x => x.SerializeAsV2 = true);
+app.UseSwagger();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

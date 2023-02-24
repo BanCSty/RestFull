@@ -39,7 +39,7 @@ namespace V2.Services
             _logger.LogInformation("Timed Hosted Service running.");
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero,
-                TimeSpan.FromSeconds(10));
+                TimeSpan.FromMinutes(1));
 
             return Task.CompletedTask;
         }
