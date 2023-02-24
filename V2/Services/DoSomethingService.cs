@@ -5,14 +5,14 @@ namespace V2.Services
 {
     public interface IDoSomethingService
     {
-        public Something GenerateRandomEnumerable();
+        public SomethingModel GenerateRandomEnumerable();
 
-        public string GetDateAndValues();
+        public LoggerModel GetDateAndValues();
     }
     public class DoSomethingService : IDoSomethingService, IHostedService, IDisposable
     {
         //Решил в этом примере варианте не делать базу данных и оставить все статической переменной
-        public static List<Something> Somethings { get; set; }
+        public static List<SomethingModel> Somethings { get; set; }
 
         private int executionCount = 0;
         private readonly ILogger<DoSomethingService> _logger;
@@ -21,7 +21,7 @@ namespace V2.Services
         public DoSomethingService(ILogger<DoSomethingService> logger)
         {
             _logger = logger;
-            Somethings = new List<Something> { new Something() };
+            Somethings = new List<SomethingModel> { new SomethingModel() };
         }
 
         private static readonly string[] Values = new[]
@@ -30,8 +30,8 @@ namespace V2.Services
         };
 
         //Генерация рандомного свойства Name/Value
-        public Something GenerateRandomEnumerable() =>
-            new Something { Name = Values[Random.Shared.Next(Values.Length)], Value = 10 };
+        public SomethingModel GenerateRandomEnumerable() =>
+            new SomethingModel { Name = Values[Random.Shared.Next(Values.Length)], Value = 10 };
 
 
         public Task StartAsync(CancellationToken stoppingToken)
@@ -49,7 +49,7 @@ namespace V2.Services
         {
             var count = Interlocked.Increment(ref executionCount);
 
-            var result = GetDateAndValues();
+            var result = GetDateAndValues().ToString();
 
             _logger.LogInformation(result);
         }
@@ -69,11 +69,11 @@ namespace V2.Services
         }
 
         //Формирует строку Дата/Сум(значения)
-        public string GetDateAndValues()
+        public LoggerModel GetDateAndValues()
         {
             var sum = Somethings.Select(x => x.Value).Sum();
 
-            return String.Format($"Date: {DateTime.Now}, Sum values: {sum}");
+            return new LoggerModel {Date = DateTime.Now.ToString(), Value = sum };
         }
     }
 }
